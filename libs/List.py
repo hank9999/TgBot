@@ -6,7 +6,7 @@ from Setting import ClientServerUrl, ServerList
 
 async def List():
     try:
-        data = encrypt(json.dumps(ServerList))
+        data = await encrypt(json.dumps(ServerList))
         r = requests.post(ClientServerUrl + '/list', data=data)
         if r.status_code != 200:
             return r.text
