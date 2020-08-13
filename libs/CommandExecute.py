@@ -15,13 +15,18 @@ async def helpCommand(username):
 async def parser(data):
     print(data)
 
-    username = data['message']['from']['username']
-    is_bot = data['message']['from']['is_bot']
-    text = data['message']['text']
-    if not is_bot:
-        if text.find('/help') == 0:
-            await helpCommand(username)
-        else:
-            pass
-    else:
-        pass
+    try:
+        username = data['message']['from']['username']
+        is_bot = data['message']['from']['is_bot']
+        text = data['message']['text']
+        need_execute = True
+    except Exception:
+        username = ''
+        is_bot = False
+        text = ''
+        need_execute = False
+
+    if need_execute:
+        if not is_bot:
+            if text.find('/help') == 0:
+                await helpCommand(username)
