@@ -1,14 +1,16 @@
-import re
-from libs.MCRcon import MCRcon
-from Setting import RconSetting
+import json
+import requests
+from libs.Encryption import encrypt, decrypt
+from Setting import ClientServerUrl
 
 
-async def rcon(name, command):
-    for k, v in RconSetting.items():
-        if k == name:
-            with MCRcon(v['address'], v['password'], v['port']) as mcr:
-                r = mcr.command(command)
-            r = re.sub('§[0-9a-fk-or]', '', r, re.IGNORECASE)
-            return r
-        else:
-            return '不存在该子服的RCON配置, 请检查子服名称'
+async def rcon(address, port, password, command):
+    try:
+        data = encrypt(json.dumps({'address': address, 'port': port, 'password': password, 'command': command}))
+        r = requests.post(ClientServerUrl + '/rcon', data=data)
+        if r.status_code != 200:
+            return r.text
+        result = decrypt(r.text)
+        return result
+    except Exception:
+        return 'RCON执行过程中出错'
