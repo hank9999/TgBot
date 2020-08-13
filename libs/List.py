@@ -10,7 +10,7 @@ async def List():
         r = requests.post(ClientServerUrl + '/list', data=data)
         if r.status_code != 200:
             return r.text
-        result = decrypt(r.text)
+        result = await decrypt(r.text)
         return result
     except Exception:
         return '获取状态过程中出错'
