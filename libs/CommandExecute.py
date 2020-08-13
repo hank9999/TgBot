@@ -1,4 +1,5 @@
 from libs.SendMessage import SendMessage
+import datetime
 
 
 async def helpCommand(username):
@@ -16,7 +17,11 @@ async def parser(data):
     is_bot = data['message']['from']['is_bot']
     text = data['message']['text']
     if not is_bot:
-        print()
+        print('[{}] [{}]: {}'.format(
+            datetime.datetime.now().strftime('%m-%d %H:%M:%S'),
+            username,
+            text
+        ))
         if text.find('/help') == 0:
             await helpCommand(username)
         else:
