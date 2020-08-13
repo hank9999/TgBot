@@ -1,4 +1,5 @@
 from libs.Message import SendMessage, ReplyMessage
+from Setting import TgSetting
 import datetime
 
 
@@ -19,7 +20,10 @@ async def parser(data):
         message_id = data['message']['message_id']
         is_bot = data['message']['from']['is_bot']
         text = data['message']['text']
-        need_execute = True
+        if str(data['message']['chat']['id']) == TgSetting['groupId']:
+            need_execute = True
+        else:
+            need_execute = False
     except Exception:
         message_id = 0
         is_bot = False
