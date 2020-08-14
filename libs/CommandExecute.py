@@ -46,6 +46,11 @@ async def runCommand(message, message_id):
         await ReplyMessage(text, message_id)
         return
 
+    if args == '':
+        text = '参数不全, 请使用 /run help 查看帮助'
+        await ReplyMessage(text, message_id)
+        return
+
     rcon_info = {}
     for k, v in RconSetting.items():
         if servername.lower() == str(k).lower():
