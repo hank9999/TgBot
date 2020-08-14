@@ -1,6 +1,7 @@
 from libs.Message import ReplyMessage
+from libs.Rcon import rcon
 from libs.List import List
-from Setting import TgSetting
+from Setting import TgSetting, RconSetting
 
 
 async def helpCommand(message_id):
@@ -11,15 +12,44 @@ async def helpCommand(message_id):
         '/list 列出服务器信息\n'
     )
     await ReplyMessage(text, message_id)
+    return
 
 
 async def listCommand(message_id):
     text = await List()
     await ReplyMessage(text, message_id)
+    return
 
 
-async def runCommand(text, message_id):
+async def runCommand(message, message_id):
+    if message.find('/run help') == 0:
+        text = (
+            '/run 帮助:\n'
+            '/run <服务器名称> <指令>'
+        )
+        await ReplyMessage(text, message_id)
+        return
+    try:
+        args = message[5:]
+        servername = args[:args.find(' ')]
+        command = args[args.find(' ')+1:]
+    except Exception:
+        text = '参数不全, 请使用 /run help 查看帮助'
+        await ReplyMessage(text, message_id)
+        return
+
+    rcon_info = {}
+    for k, v in RconSetting.items():
+        if servername.lower() == str(k).lower():
+            rcon_info = v
+    if rcon_info == {}:
+        text = '不存在此子服 请执行 /list 查看子服'
+        await ReplyMessage(text, message_id)
+        return
+
+    text = await rcon(rcon_info['address'], rcon_info['port'], rcon_info['password'], command)
     await ReplyMessage(text, message_id)
+    return
 
 
 async def parser(data):
