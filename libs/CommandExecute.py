@@ -25,6 +25,8 @@ async def runCommand(message, message_id):
     if message.find('/run help') == 0:
         text = (
             '/run 帮助:\n'
+            '/run help 获取帮助\n'
+            '/run list 查看可用rcon子服\n'
             '/run <服务器名称> <指令>'
         )
         await ReplyMessage(text, message_id)
