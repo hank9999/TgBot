@@ -46,7 +46,7 @@ async def runCommand(message, message_id):
         await ReplyMessage(text, message_id)
         return
 
-    if args == '':
+    if args == '' or servername == '' or command == '':
         text = '参数不全, 请使用 /run help 查看帮助'
         await ReplyMessage(text, message_id)
         return
