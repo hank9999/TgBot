@@ -29,6 +29,12 @@ async def runCommand(message, message_id):
         )
         await ReplyMessage(text, message_id)
         return
+    if message.find('/run list') == 0:
+        text = ''
+        for i in RconSetting.keys():
+            text += str(i) + '\n'
+        await ReplyMessage(text, message_id)
+        return
     try:
         args = message[5:]
         servername = args[:args.find(' ')]
@@ -43,7 +49,7 @@ async def runCommand(message, message_id):
         if servername.lower() == str(k).lower():
             rcon_info = v
     if rcon_info == {}:
-        text = '不存在此子服 请执行 /list 查看子服'
+        text = '不存在此子服 请执行 /run list 查看可用rcon子服'
         await ReplyMessage(text, message_id)
         return
 
