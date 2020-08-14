@@ -85,8 +85,8 @@ async def sayCommand(message, message_id):
         args = message[5:]
         servername = args[:args.find(' ')]
         name_texts = args[args.find(' ')+1:]
-        name = name_texts[:args.find(' ')]
-        texts = name_texts[args.find(' ')+1:]
+        name = name_texts[:args.find(' ')-1]
+        texts = name_texts[args.find(' '):]
     except Exception:
         text = '参数不全, 请使用 /say help 查看帮助'
         await ReplyMessage(text, message_id)
