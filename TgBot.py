@@ -1,8 +1,10 @@
 from aiohttp import web
+import requests
 from libs.CommandExecute import parser
 from Setting import WebServerSetting
 
 routes = web.RouteTableDef()
+session = requests.session()
 
 @routes.get('/')
 async def get_handler(request):
@@ -12,7 +14,7 @@ async def get_handler(request):
 @routes.post('/' + WebServerSetting['post'])
 async def post_handler(request):
     data = await request.json()
-    await parser(data)
+    await parser(data, session)
     return web.Response(text='OK')
 
 
